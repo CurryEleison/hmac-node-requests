@@ -1,0 +1,10 @@
+{
+    "auth": {
+        "appId": "<appId goes here (a guid without -)>",
+        "secretKey": "<secretKey here (some base64 encoded bytes)>"
+    },
+    "req": {
+        "defaultUrl": "http://<hostname>/api/health/auth",
+        "defaultBody": {"a": 1}
+    }
+}
