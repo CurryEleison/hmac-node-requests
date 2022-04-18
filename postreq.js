@@ -5,25 +5,26 @@ import {createHmac, createHash} from 'crypto';
 import nodeConfig from 'config';
 import { readFileSync } from 'fs';
 
+// Config and input
 const args = process.argv.slice(2);
-const url = args[0] ? args[0] : nodeConfig.get("req.defaultUrl");
-
-let stringbody = !!args[1] ? readFileSync(args[1]).toString() : JSON.stringify(nodeConfig.get("req.defaultBody"));
-
 const appId = nodeConfig.get("auth.appId");
 const secretKey = nodeConfig.get("auth.secretKey")
 
+// Figure out what request we want to perform
+const url = args[0] ? args[0] : nodeConfig.get("req.defaultUrl");
+let stringbody = !!args[1] ? readFileSync(args[1]).toString() : JSON.stringify(nodeConfig.get("req.defaultBody"));
+const requestHttpMethod = "POST";
+
+// Calculate HMAC
 const requestUri = encodeURIComponent(url).toLowerCase();
-const requestHttpMethod = "POST"; //should be dynamic
-const bodyhash = createHash('md5').update(stringbody).digest("base64");
 const requestTimeStamp = Math.floor(new Date().getTime() / 1000).toString();
-
 const nonce = uuidv4().replace(/-/g, '');
+const bodyhash = createHash('md5').update(stringbody).digest("base64");
 const signatureRawData = appId + requestHttpMethod + requestUri + requestTimeStamp + nonce + bodyhash;
-
 const key = Buffer.from(secretKey, 'base64');
 const requestSignatureBase64String = createHmac('sha256', key).update(signatureRawData, 'utf8').digest('base64');
 
+// Send Request
 const hitExternalAPI = async url => {
   try {
     const res = await fetch(url, { 
