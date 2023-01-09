@@ -4,6 +4,11 @@ Use to run requests against services secured by HMAC auth in the style of
 https://bitoftech.net/2014/12/15/secure-asp-net-web-api-using-api-key-authentication-hmac-authentication/ .
 Code is from https://stackoverflow.com/questions/49495333/nodejs-equivalent-of-c-sharp-code-for-hmac-sha256-authorization .
 
+## Status
+
+Was used to access a particular migration endpoint. Project is finished
+and this tool is no longer needed.
+
 ## Installation
 
 Do an `npm install` to get dependencies. If you use a `NODE_ENV` then make a copy
